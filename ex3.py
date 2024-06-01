@@ -28,20 +28,21 @@ def evaluate_model(A_train, b_train, A_test, b_test, epsilon=0.01, delta=1e-5):
     xk, train_errors = gradient_descent(A_train, b_train, epsilon, delta)
     train_errors = np.array(train_errors)
     
+    
     test_errors = []
     for i in range(len(train_errors)):
         b_pred = A_test.dot(xk)
         test_error = np.mean((b_test - b_pred)**2)
         test_errors.append(test_error)
     
-    return train_errors, test_errors
+    return train_errors, test_errors, xk
 
 def main():
     # Split the data into a training set and a testing set
     A_train, A_test, b_train, b_test = train_test_split(A, b, test_size=0.2, random_state=42)
 
     # Evaluate the model and plot errors
-    train_errors, test_errors = evaluate_model(A_train, b_train, A_test, b_test)
+    train_errors, test_errors, xk = evaluate_model(A_train, b_train, A_test, b_test)
     
     plt.figure(figsize=(10, 6))
     plt.plot(train_errors, label='Train Error')
@@ -53,15 +54,15 @@ def main():
     plt.show()
 
     # Repeat the process with different splits and average results
-    n_repeats = 10
     all_train_errors = []
     all_test_errors = []
 
-    for i in range(n_repeats):
+    for i in range(10):
         A_train, A_test, b_train, b_test = train_test_split(A, b, test_size=0.2)
-        train_errors, test_errors = evaluate_model(A_train, b_train, A_test, b_test)
+        train_errors, test_errors, xk = evaluate_model(A_train, b_train, A_test, b_test)
         all_train_errors.append(train_errors)
         all_test_errors.append(test_errors)
+        print(f'xk of Iteration {i+1}/10 is {xk}')
     
     avg_train_errors = np.mean(all_train_errors, axis=0)
     avg_test_errors = np.mean(all_test_errors, axis=0)
