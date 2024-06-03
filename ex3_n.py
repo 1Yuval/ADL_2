@@ -14,7 +14,7 @@ b = diabetes_sklearn.target.reshape((-1,1))
 
 
 
-def gradient_descent_w_mse(A_train, A_test, b_train, b_test,index, epsilon = 0.01, delta = 1e-5):
+def gradient_descent(A_train, A_test, b_train, b_test,index, epsilon = 0.01, delta = 1e-5):
     
     n, m = A_train.shape
 
@@ -43,7 +43,7 @@ def gradient_descent_w_mse(A_train, A_test, b_train, b_test,index, epsilon = 0.0
     TRAIN_ERR = np.stack(TRAIN_ERR)
     plt.legend(['Test Error', 'Train Error'])
     
-    plt.title(f'Test Error vs Train Error For iteration ${index}')
+    plt.title(f'Test Error vs Train Error For iteration {index+1}')
     plt.xlabel('Iteration')
     plt.ylabel('Error') 
     plt.show()
@@ -57,8 +57,8 @@ def main():
     
     for i in range(10):
         # Split the data into a training set and a testing set
-        A_train, A_test, b_train, b_test = train_test_split(A, b, test_size=0.2, random_state=42)
-        xk, train_errors, test_errors = gradient_descent_w_mse(A_train, A_test, b_train, b_test, i)
+        A_train, A_test, b_train, b_test = train_test_split(A, b, test_size=0.2)
+        xk, train_errors, test_errors = gradient_descent(A_train, A_test, b_train, b_test, i)
         all_train_errors.append(train_errors)
         all_test_errors.append(test_errors)
         print(f'xk of Iteration {i+1}/10 is {xk}')
