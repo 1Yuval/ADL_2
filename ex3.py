@@ -15,20 +15,16 @@ def gradient_descent(A_train, b_train, epsilon=0.01, delta=1e-5, max_iter=10000)
     grad = 2 * A_train.T.dot(A_train.dot(xk) - b_train)
     
     errors = []
-    iter_count = 0
-    while np.linalg.norm(grad) > delta and iter_count < max_iter:
+    while np.linalg.norm(grad) > delta:
         xk = xk - epsilon * grad
         grad = 2 * A_train.T.dot(A_train.dot(xk) - b_train)
         error = err_fun(xk)
         errors.append(error)
-        iter_count += 1
     return xk, errors
 
 def evaluate_model(A_train, b_train, A_test, b_test, epsilon=0.01, delta=1e-5):
     xk, train_errors = gradient_descent(A_train, b_train, epsilon, delta)
     train_errors = np.array(train_errors)
-    
-    
     test_errors = []
     for i in range(len(train_errors)):
         b_pred = A_test.dot(xk)
