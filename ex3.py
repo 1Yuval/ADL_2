@@ -15,7 +15,7 @@ def gradient_descent(A_train, b_train, epsilon=0.01, delta=1e-5, max_iter=10000)
     grad = 2 * A_train.T.dot(A_train.dot(xk) - b_train)
     
     errors = []
-    while np.linalg.norm(grad) > delta:
+    while np.linalg.norm(grad) > delta and len(errors) < max_iter:
         xk = xk - epsilon * grad
         grad = 2 * A_train.T.dot(A_train.dot(xk) - b_train)
         error = err_fun(xk)
