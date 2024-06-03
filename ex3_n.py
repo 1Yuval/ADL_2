@@ -65,16 +65,15 @@ def main():
     
 
     # Use masked arrays to handle sequences of different lengths
-    max_length = max(len(seq) for seq in all_train_errors)
-    masked_train_errors = np.ma.array([np.pad(seq, (0, max_length - len(seq)), 'constant', constant_values=np.nan) for seq in all_train_errors], mask=np.isnan([np.pad(seq, (0, max_length - len(seq)), 'constant', constant_values=np.nan) for seq in all_train_errors]))
-    masked_test_errors = np.ma.array([np.pad(seq, (0, max_length - len(seq)), 'constant', constant_values=np.nan) for seq in all_test_errors], mask=np.isnan([np.pad(seq, (0, max_length - len(seq)), 'constant', constant_values=np.nan) for seq in all_test_errors]))
-
-    avg_train_errors = np.ma.mean(masked_train_errors, axis=0)  
-    avg_test_errors = np.ma.mean(masked_test_errors, axis=0)  
-    min_train_errors = np.ma.min(masked_train_errors, axis=0)  
-    min_test_errors = np.ma.min(masked_test_errors, axis=0) 
-    max_train_errors = np.ma.max(masked_train_errors, axis=0)  
-    max_test_errors = np.ma.max(masked_test_errors, axis=0) 
+    min_length = min(len(seq) for seq in all_train_errors)
+    new_train_errors = np.array([seq[:min_length] for seq in all_train_errors])
+    new_test_errors = np.array([seq[:min_length] for seq in all_test_errors])
+    avg_train_errors = np.ma.mean(new_train_errors, axis=0)  
+    avg_test_errors = np.ma.mean(new_test_errors, axis=0)  
+    min_train_errors = np.ma.min(new_train_errors, axis=0)  
+    min_test_errors = np.ma.min(new_test_errors, axis=0) 
+    max_train_errors = np.ma.max(new_train_errors, axis=0)  
+    max_test_errors = np.ma.max(new_test_errors, axis=0) 
 
     plt.figure(figsize=(10, 6))
     plt.plot(avg_train_errors, label='Average Train Error')  
