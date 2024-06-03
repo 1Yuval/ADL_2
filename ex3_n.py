@@ -63,17 +63,14 @@ def main():
         all_test_errors.append(test_errors)
         print(f'xk of time {i+1}/10 is {xk}')
     
-    # Pad sequences to the same length
-    max_length = max(len(seq) for seq in all_train_errors)
-    padded_train_errors = np.array([np.pad(seq, (0, max_length - len(seq)), 'constant', constant_values=np.nan) for seq in all_train_errors])
-    padded_test_errors = np.array([np.pad(seq, (0, max_length - len(seq)), 'constant', constant_values=np.nan) for seq in all_test_errors])
 
-    avg_train_errors = np.nanmean(padded_train_errors, axis=0)  
-    avg_test_errors = np.nanmean(padded_test_errors, axis=0)  
-    min_train_errors = np.nanmin(padded_train_errors, axis=0)  
-    min_test_errors = np.nanmin(padded_test_errors, axis=0)  
-    max_train_errors = np.nanmax(padded_train_errors, axis=0)  
-    max_test_errors = np.nanmax(padded_test_errors, axis=0)  
+
+    avg_train_errors = np.mean(all_train_errors, axis=0)
+    avg_test_errors = np.mean(all_test_errors, axis=0)
+    min_train_errors = np.min(all_train_errors, axis=0)
+    min_test_errors = np.min(all_test_errors, axis=0)
+    max_train_errors = np.max(all_train_errors, axis=0)
+    max_test_errors = np.max(all_test_errors, axis=0)
 
     plt.figure(figsize=(10, 6))
     plt.plot(avg_train_errors, label='Average Train Error')  
