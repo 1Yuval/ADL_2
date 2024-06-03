@@ -15,9 +15,8 @@ epsilon = 0.01  # step size
 delta = 1e-5    # stop conditions
 
 
-def gradient_descent_w_mse(A,b, index):
-    # Split the data into a training set and a testing set
-    A_train, A_test, b_train, b_test = train_test_split(A, b, test_size=0.2, random_state=42)
+def gradient_descent_w_mse(A_train, A_test, b_train, b_test, index):
+    
     n, m = A_train.shape
 
     #initialize the parameters
@@ -45,7 +44,7 @@ def gradient_descent_w_mse(A,b, index):
     ERR = np.stack(TRAIN_ERR)
     plt.legend(['Test Error', 'Train Error'])
     
-    plt.title('Test Error vs Train Error For iteration {index}')
+    plt.title(f'Test Error vs Train Error For iteration ${index}')
     plt.xlabel('Iteration')
     plt.ylabel('Error') 
     plt.show()
@@ -58,7 +57,9 @@ def main():
     all_test_errors = []
     
     for i in range(10):
-        xk, train_errors, test_errors = gradient_descent_w_mse(A,b, i)
+        # Split the data into a training set and a testing set
+        A_train, A_test, b_train, b_test = train_test_split(A, b, test_size=0.2, random_state=42)
+        xk, train_errors, test_errors = gradient_descent_w_mse(A_train, A_test, b_train, b_test, i)
         all_train_errors.append(train_errors)
         all_test_errors.append(test_errors)
         print(f'xk of Iteration {i+1}/10 is {xk}')
