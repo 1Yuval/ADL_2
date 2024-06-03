@@ -69,20 +69,20 @@ def main():
     masked_train_errors = np.ma.array([np.pad(seq, (0, max_length - len(seq)), 'constant', constant_values=np.nan) for seq in all_train_errors], mask=np.isnan([np.pad(seq, (0, max_length - len(seq)), 'constant', constant_values=np.nan) for seq in all_train_errors]))
     masked_test_errors = np.ma.array([np.pad(seq, (0, max_length - len(seq)), 'constant', constant_values=np.nan) for seq in all_test_errors], mask=np.isnan([np.pad(seq, (0, max_length - len(seq)), 'constant', constant_values=np.nan) for seq in all_test_errors]))
 
-    avg_train_errors = np.ma.mean(masked_train_errors, axis=0)  #@$
-    avg_test_errors = np.ma.mean(masked_test_errors, axis=0)  #@$
-    min_train_errors = np.ma.min(masked_train_errors, axis=0)  #@$
-    min_test_errors = np.ma.min(masked_test_errors, axis=0)  #@$
-    max_train_errors = np.ma.max(masked_train_errors, axis=0)  #@$
-    max_test_errors = np.ma.max(masked_test_errors, axis=0)  #@$
+    avg_train_errors = np.ma.mean(masked_train_errors, axis=0)  
+    avg_test_errors = np.ma.mean(masked_test_errors, axis=0)  
+    min_train_errors = np.ma.min(masked_train_errors, axis=0)  
+    min_test_errors = np.ma.min(masked_test_errors, axis=0) 
+    max_train_errors = np.ma.max(masked_train_errors, axis=0)  
+    max_test_errors = np.ma.max(masked_test_errors, axis=0) 
 
     plt.figure(figsize=(10, 6))
-    plt.plot(avg_train_errors, label='Average Train Error')  #@$
-    plt.plot(avg_test_errors, label='Average Test Error')  #@$
-    plt.plot(min_train_errors, label='Minimum Train Error')  #@$
-    plt.plot(min_test_errors, label='Minimum Test Error')  #@$
-    plt.plot(max_train_errors, label='Maximum Train Error')  #@$
-    plt.plot(max_test_errors, label='Maximum Test Error')  #@$
+    plt.plot(avg_train_errors, label='Average Train Error')  
+    plt.plot(avg_test_errors, label='Average Test Error')  
+    plt.plot(min_train_errors, label='Minimum Train Error')  
+    plt.plot(min_test_errors, label='Minimum Test Error')  
+    plt.plot(max_train_errors, label='Maximum Train Error')  
+    plt.plot(max_test_errors, label='Maximum Test Error')  
     plt.legend()
     plt.xlabel('Iteration')
     plt.ylabel('Error')
