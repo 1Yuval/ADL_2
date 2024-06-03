@@ -12,8 +12,8 @@ A = diabetes_sklearn.data
 b = diabetes_sklearn.target.reshape((-1,1))
 #initial point, step size ϵ, and the stopping condition δ
 n, m = A.shape
-epsilon = 0.01  # step size
-delta = 1e-5    # stop conditions
+epsilon = 1e-3   # step size
+delta = 1e-3    # stop conditions
 #initialize the parameters
 xk = np.zeros(m).reshape((-1,1))
 #objective function
@@ -30,8 +30,7 @@ while np.linalg.norm(grad) > delta:
 print(xk)
     
 plt.plot(ERR)
-plt.legend(['Test Error', 'Train Error'])
-plt.title('Test Error vs Train Error')
+plt.title('Error vs Iteration for Gradient Descent')
 plt.xlabel('Iteration')
 plt.ylabel('Error') 
 plt.show()
