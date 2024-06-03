@@ -11,11 +11,10 @@ from sklearn.model_selection import train_test_split
 diabetes_sklearn = load_diabetes()
 A = diabetes_sklearn.data
 b = diabetes_sklearn.target.reshape((-1,1))
-epsilon = 0.01  # step size
-delta = 1e-5    # stop conditions
 
 
-def gradient_descent_w_mse(A_train, A_test, b_train, b_test, index):
+
+def gradient_descent_w_mse(A_train, A_test, b_train, b_test,index, epsilon = 0.01, delta = 1e-5):
     
     n, m = A_train.shape
 
@@ -24,31 +23,31 @@ def gradient_descent_w_mse(A_train, A_test, b_train, b_test, index):
     #objective function
     err_train_fun = lambda x: np.linalg.norm(A_train.dot(x) - b_train)**2
     TRAIN_ERR = []
-    MSE = []
+    TEST_ERR = []
     #gradient descent
     grad = 2*A_train.T.dot(A_train.dot(xk) - b_train)
     while np.linalg.norm(grad) > delta:
-        train_err = err_train_fun(xk)
-        TRAIN_ERR.append(train_err)
         xk = xk - epsilon * grad
         grad = 2*A_train.T.dot(A_train.dot(xk) - b_train)
+        train_err = err_train_fun(xk)
+        TRAIN_ERR.append(train_err)
         # Evaluate on the test set
         # Prediction
         b_pred = A_test.dot(xk)
         mse = np.mean((b_test - b_pred)**2)
-        MSE.append(mse)
+        TEST_ERR.append(mse)
     #plot the results with title and bar title
     #the error plot of this procedure, namely a graph of the error l2 |A@xk − b|**2 where xk is the point at step k.
     # show a graph of the train error jointly with the graph of the test error
-    plt.plot(MSE), plt.plot(TRAIN_ERR)
-    ERR = np.stack(TRAIN_ERR)
+    plt.plot(TEST_ERR), plt.plot(TRAIN_ERR)
+    TRAIN_ERR = np.stack(TRAIN_ERR)
     plt.legend(['Test Error', 'Train Error'])
     
     plt.title(f'Test Error vs Train Error For iteration ${index}')
     plt.xlabel('Iteration')
     plt.ylabel('Error') 
     plt.show()
-    return xk, TRAIN_ERR, MSE
+    return xk, TRAIN_ERR, TEST_ERR
 
 
 def main():
