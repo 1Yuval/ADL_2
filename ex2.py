@@ -17,8 +17,8 @@ A_train, A_test, b_train, b_test = train_test_split(A, b, test_size=0.2)
 
 def gradient_descent(A_train, b_train, A_test, b_test):
     n, m = A_train.shape
-    epsilon = 0.01 # step size
-    delta = 5    # stop conditions
+    epsilon = 1e-3 # step size
+    delta = 10    # stop conditions
     #initialize the parameters
     x0 = np.zeros(m).reshape((-1,1))
     xk = x0
