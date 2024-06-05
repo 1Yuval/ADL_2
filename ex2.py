@@ -17,13 +17,13 @@ b = diabetes_sklearn.target.reshape((-1,1))
 def gradient_descent():
     A_train, A_test, b_train, b_test = train_test_split(A, b, test_size=0.2)
     n, m = A_train.shape
-    epsilon = 1e-2 # step size
-    delta = 5    # stop conditions
+    epsilon = 1e-3 # step size
+    delta = 1e-2   # stop conditions
     #initialize the parameters
     x0 = np.zeros(m).reshape((-1,1))
     #objective function
-    train_err_fun = lambda x: np.linalg.norm(A_train.dot(x) - b_train)**2
-    test_err_fun = lambda x: np.linalg.norm(A_test.dot(x) - b_test)**2
+    train_err_fun = lambda x: np.linalg.norm(A_train.dot(x) - b_train)**2/len(b_train)
+    test_err_fun = lambda x: np.linalg.norm(A_test.dot(x) - b_test)**2/len(b_test)
     TRAIN_ERR = []
     TEST_ERR = []
     curr_train_err = train_err_fun(x0)
@@ -34,8 +34,8 @@ def gradient_descent():
     grad = 2*A_train.T.dot(A_train.dot(x0) - b_train)
     xk = x0
     while np.linalg.norm(grad) > delta:
-        grad = 2*A_train.T.dot(A_train.dot(xk) - b_train)
         xk = xk - epsilon * grad
+        grad = 2*A_train.T.dot(A_train.dot(xk) - b_train)
         # Evaluate on the test set
         # Prediction
         train_err = train_err_fun(xk)
