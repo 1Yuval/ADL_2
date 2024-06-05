@@ -17,8 +17,8 @@ b = diabetes_sklearn.target.reshape((-1,1))
 def gradient_descent():
     A_train, A_test, b_train, b_test = train_test_split(A, b, test_size=0.2)
     n, m = A_train.shape
-    epsilon = 1e-3 # step size
-    delta = 10    # stop conditions
+    epsilon = 1e-2 # step size
+    delta = 5    # stop conditions
     #initialize the parameters
     x0 = np.zeros(m).reshape((-1,1))
     #objective function
@@ -47,12 +47,12 @@ def gradient_descent():
     #the error plot of this procedure, namely a graph of the error l2 |A@xk − b|**2 where xk is the point at step k.
     # show a graph of the train error jointly with the graph of the test error
     plt.figure(figsize=(10, 6))
-    plt.plot(TEST_ERR), plt.plot(TRAIN_ERR)
-    plt.legend(['Test Error', 'Train Error'])
-    
+    plt.plot(TEST_ERR, label= 'Test Error')
+    plt.plot(TRAIN_ERR, label= 'Train Error')    
     plt.title('Test Error vs Train Error over Iterations for Gradient Descent')
     plt.xlabel('Iteration')
-    plt.ylabel('Error') 
+    plt.ylabel('Error |Ax - b|^2 / len(b)') 
+    plt.legend()
     plt.grid(True)
     plt.show()
 
