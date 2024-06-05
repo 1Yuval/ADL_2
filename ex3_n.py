@@ -14,14 +14,15 @@ b = diabetes_sklearn.target.reshape((-1,1))
 
 
 
-def gradient_descent(A_train, A_test, b_train, b_test,index, epsilon = 0.01, delta = 1e-5):
+def gradient_descent(A_train, A_test, b_train, b_test,index, epsilon = 0.01, delta = 1e-3):
     
     n, m = A_train.shape
 
     #initialize the parameters
     xk = np.zeros(m).reshape((-1,1))
     #objective function
-    err_train_fun = lambda x: np.linalg.norm(A_train.dot(x) - b_train)**2
+    err_train_fun = lambda x: np.linalg.norm(A_train.dot(x) - b_train)**2/len(b_train)
+    err_test_fun = lambda x: np.linalg.norm(A_test.dot(x) - b_test)**2/len(b_test)
     TRAIN_ERR = []
     TEST_ERR = []
     #gradient descent
@@ -33,23 +34,32 @@ def gradient_descent(A_train, A_test, b_train, b_test,index, epsilon = 0.01, del
         TRAIN_ERR.append(train_err)
         # Evaluate on the test set
         # Prediction
-        b_pred = A_test.dot(xk)
-        mse = np.mean((b_test - b_pred)**2)
-        TEST_ERR.append(mse)
+        test_err = err_test_fun(xk)
+        TEST_ERR.append(test_err)
     #plot the results with title and bar title
     #the error plot of this procedure, namely a graph of the error l2 |A@xk − b|**2 where xk is the point at step k.
     # show a graph of the train error jointly with the graph of the test error
-    plt.plot(TEST_ERR), plt.plot(TRAIN_ERR)
+    plt.plot(TEST_ERR, label='Test error')
+    plt.plot(TRAIN_ERR, label='Train error')
     TRAIN_ERR = np.stack(TRAIN_ERR)
     plt.legend(['Test Error', 'Train Error'])
     
-    plt.title(f'Test Error vs Train Error For Time {index+1}')
+    plt.title(f'Test Error vs Train Error over iterations For Time {index+1}')
     plt.xlabel('Iteration')
     plt.ylabel('Error') 
     plt.show()
     return xk, TRAIN_ERR, TEST_ERR
 
-
+def plot_min_max_avg(train_errors, test_errors, str):
+    plt.figure(figsize=(10, 6))
+    plt.plot(train_errors, label=f'{str} Train Error')  
+    plt.plot(test_errors, label=f'{str} Test Error')  
+    plt.legend()
+    plt.xlabel('Iteration')
+    plt.ylabel('Error')
+    plt.title(f'{str} Train and Test Errors over Iterations')
+    plt.grid(True)
+    plt.show()
 def main():
     # Repeat the process with different splits and average results
     all_train_errors = []
@@ -75,18 +85,10 @@ def main():
     max_train_errors = np.ma.max(new_train_errors, axis=0)  
     max_test_errors = np.ma.max(new_test_errors, axis=0) 
 
-    plt.figure(figsize=(10, 6))
-    plt.plot(avg_train_errors, label='Average Train Error')  
-    plt.plot(avg_test_errors, label='Average Test Error')  
-    plt.plot(min_train_errors, label='Minimum Train Error')  
-    plt.plot(min_test_errors, label='Minimum Test Error')  
-    plt.plot(max_train_errors, label='Maximum Train Error')  
-    plt.plot(max_test_errors, label='Maximum Test Error')  
-    plt.legend()
-    plt.xlabel('Iteration')
-    plt.ylabel('Error')
-    plt.title('Average Min and Max Train and Test Errors over Iterations')
-    plt.show()
+    plot_min_max_avg(avg_train_errors, avg_test_errors, 'Average')
+    plot_min_max_avg(min_train_errors, min_test_errors, 'Minimum')
+    plot_min_max_avg(max_train_errors, max_test_errors, 'Maximum')
+
 
 if __name__ == "__main__":
     main()
