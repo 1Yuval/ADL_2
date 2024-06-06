@@ -15,11 +15,12 @@ n, m = A.shape
 epsilon = 1e-3   # step size
 delta = 1e-3    # stop conditions
 #initialize the parameters
-xk = np.zeros(m).reshape((-1,1))
+x0 = np.zeros(m).reshape((-1,1))
 #objective function
-err_fun = lambda x: np.linalg.norm(A.dot(x) - b)**2
+err_fun = lambda x: np.mean((A.dot(x) - b)**2)
 ERR = []
 #gradient descent
+xk=x0
 grad = 2*A.T.dot(A.dot(xk) - b)
 while np.linalg.norm(grad) > delta:
     err = err_fun(xk)
@@ -28,11 +29,13 @@ while np.linalg.norm(grad) > delta:
     grad = 2*A.T.dot(A.dot(xk) - b)
 
 print(xk)
+print(np.linalg.norm(grad))
+
     
 plt.plot(ERR)
 plt.title('Error vs Iteration for Gradient Descent')
 plt.xlabel('Iteration')
-plt.ylabel('Error') 
+plt.ylabel('Error |Ax - b|^2') 
 plt.show()
 
 

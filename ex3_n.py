@@ -14,7 +14,7 @@ b = diabetes_sklearn.target.reshape((-1,1))
 
 
 
-def gradient_descent(A_train, A_test, b_train, b_test,index, epsilon = 0.01, delta = 1e-3):
+def gradient_descent(A_train, A_test, b_train, b_test,index, epsilon = 1e-3, delta = 5):
     
     n, m = A_train.shape
 
